@@ -148,6 +148,10 @@ def scrape_page(url, proxy_list):
 
 # --- Part 3: Main execution block ---
 import re
+def get_last_part_from_current_url(driver):
+    current_url = driver.current_url
+    return current_url.rstrip("/").split("/")[-1]
+
 
 def clean_company_name(company_name: str) -> str:
     """
@@ -181,7 +185,7 @@ def get_trustpilot_website(company_name: str, proxies: list, headless: bool = Tr
     
     # Clean the company name by removing dots and special characters
     original_company_name = company_name
-    cleaned_company_name = clean_company_name(company_name)
+    cleaned_company_name = original_company_name
     print(f"Original company name: '{original_company_name}'")
     print(f"Cleaned company name: '{cleaned_company_name}'")
     
@@ -300,12 +304,15 @@ def get_trustpilot_website(company_name: str, proxies: list, headless: bool = Tr
                 time.sleep(1.5)  
                 
                 # 3. Wait for the search results to load and find the website URL element.
-                first_result_url_element = wait.until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "p[class*='styles_websiteUrlDisplayed']"))
-                )
+                # first_result_url_element = wait.until(
+                #     EC.presence_of_element_located((By.CSS_SELECTOR, "p[class*='styles_websiteUrlDisplayed']"))
+                # )
 
-                # 4. Extract the text from the element.
-                scraped_url = first_result_url_element.text
+                # # 4. Extract the text from the element.
+                # scraped_url = first_result_url_element.text
+                # link_element = driver.find_element(By.CSS_SELECTOR, "a[href*='utm_medium=company_profile']")
+                # scraped_url = link_element.get_attribute("href")
+                scraped_url = get_last_part_from_current_url(driver)
                 
                 # 5. Validate if the CLEANED company name is in the scraped URL.
                 match_percentage = calculate_match_percentage(cleaned_company_name, scraped_url)
@@ -543,4 +550,13 @@ def main(company_to_search, url , proxy_list):
     pain_points = get_pain_points_from_reviews(reviews, "review_content", "rating", api_key)
     return url, pain_points
 
-
+print(get_trustpilot_website("legalplace.fr",proxies = [
+    "198.23.239.134:6540:pgnprica:xukeqgumn3be",
+    "207.244.217.165:6712:pgnprica:xukeqgumn3be",
+    "107.172.163.27:6543:pgnprica:xukeqgumn3be",
+    "104.222.161.211:6343:pgnprica:xukeqgumn3be",
+    "64.137.96.74:6641:pgnprica:xukeqgumn3be",
+    "216.10.27.159:6837:pgnprica:xukeqgumn3be",
+    "136.0.207.84:6661:pgnprica:xukeqgumn3be",
+    "23.95.150.145:6114:pgnprica:xukeqgumn3be"
+]))
