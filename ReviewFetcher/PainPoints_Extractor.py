@@ -550,13 +550,3 @@ def main(company_to_search, url , proxy_list):
     pain_points = get_pain_points_from_reviews(reviews, "review_content", "rating", api_key)
     return url, pain_points
 
-print(get_trustpilot_website("legalplace.fr",proxies = [
-    "198.23.239.134:6540:pgnprica:xukeqgumn3be",
-    "207.244.217.165:6712:pgnprica:xukeqgumn3be",
-    "107.172.163.27:6543:pgnprica:xukeqgumn3be",
-    "104.222.161.211:6343:pgnprica:xukeqgumn3be",
-    "64.137.96.74:6641:pgnprica:xukeqgumn3be",
-    "216.10.27.159:6837:pgnprica:xukeqgumn3be",
-    "136.0.207.84:6661:pgnprica:xukeqgumn3be",
-    "23.95.150.145:6114:pgnprica:xukeqgumn3be"
-]))
